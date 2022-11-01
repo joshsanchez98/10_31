@@ -26,22 +26,24 @@ def flood_fill(input_board: List[str], old: str, new: str, x: int, y: int) -> Li
     """
 
     # Step 1: Ensure the x and y are going to be within bounds.
-    if x < 0 or x >= len(input_board) or y < 0 or y >= len(input_board):return
+    if x < 0 or x >= len(input_board) or y < 0 or y >= len(input_board[x]):
+        return input_board
 
     # Step 2: We want to check whether the current position will equal the old value.
-    if input_board[y][x] != old:
-        return
+    if input_board[x][y] != old:
+        return input_board
 
     # Step 3: Set current position to the new value.
-    input_board[y][x] = new
+    input_board[x] = input_board[x][:y] + new + input_board[x][y + 1:]
 
     # Step 4: Try to fill the neighboring positions.
-    flood_fill(x+1, y, old, new)
-    flood_fill(x-1, y, old, new)
-    flood_fill(x, y+1, old, new)
-    flood_fill(x, y-1, old, new)
+    flood_fill(input_board=input_board, old=old, new=new, x=x + 1, y=y)
+    flood_fill(input_board=input_board, old=old, new=new, x=x - 1, y=y)
+    flood_fill(input_board=input_board, old=old, new=new, x=x, y=y + 1)
+    flood_fill(input_board=input_board, old=old, new=new, x=x, y=y - 1)
 
     # raise NotImplementedError
+    return input_board
 
 
 ans = flood_fill(input_board=board, old=".", new="~", x=5, y=12)
